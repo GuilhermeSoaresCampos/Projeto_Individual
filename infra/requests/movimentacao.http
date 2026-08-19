@@ -1,0 +1,15 @@
+GET http://localhost:3333/api/movimentacoes
+
+###
+POST http://localhost:3333/api/movimentacoes
+Content-Type: application/json
+
+{
+  "id_produto": 1,
+  "tipo": "SAIDA",
+  "motivo": "VENDA",
+  "quantidade": 1,
+  "preco_unitario_praticado": 45.90,
+  "valor_total": 45.90,
+  "observacao": "Venda de um mouse"
+}

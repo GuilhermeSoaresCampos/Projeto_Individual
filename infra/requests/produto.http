@@ -1,0 +1,23 @@
+GET http://localhost:3333/api/produtos
+
+###
+GET http://localhost:3333/api/produtos/reposicao
+
+###
+GET http://localhost:3333/api/produtos/valor-estoque
+
+###
+GET http://localhost:3333/api/produtos/valor-total-estoque
+
+###
+POST http://localhost:3333/api/produtos
+Content-Type: application/json
+
+{
+  "id_categoria": 1,
+  "codigo": "PER-003",
+  "nome": "Webcam USB",
+  "descricao": "Webcam para videoconferencia",
+  "preco_unitario": 129.90,
+  "quantidade_minima": 2
+}
