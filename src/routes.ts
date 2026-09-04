@@ -13,6 +13,8 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/api/categorias', CategoriaController.todos);
 router.post('/api/categorias', CategoriaController.cadastrar);
+router.put('/api/categorias/:id', CategoriaController.atualizar);
+router.delete('/api/categorias/:id', CategoriaController.remover);
 
 router.get('/api/produtos', ProdutoController.todos);
 router.get('/api/produtos/reposicao', ProdutoController.reposicao);
@@ -25,5 +27,6 @@ router.delete('/api/produtos/:id', ProdutoController.remover);
 
 router.get('/api/movimentacoes', MovimentacaoController.todos);
 router.post('/api/movimentacoes', MovimentacaoController.cadastrar);
+router.post('/api/movimentacoes/:id/correcao', MovimentacaoController.corrigir);
 
 export { router };

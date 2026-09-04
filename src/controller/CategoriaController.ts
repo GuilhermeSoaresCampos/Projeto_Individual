@@ -21,6 +21,46 @@ class CategoriaController {
             return res.status(400).json({ mensagem: 'Nao foi possivel cadastrar a categoria.' });
         }
     }
+
+    static async atualizar(req: Request, res: Response) {
+        try {
+            const id = Number(req.params.id);
+            if (!Number.isInteger(id) || id <= 0) {
+                return res.status(400).json({ mensagem: 'Identificador da categoria invalido.' });
+            }
+
+            const categoria = await Categoria.atualizar(id, req.body as CategoriaDTO);
+            return categoria
+                ? res.status(200).json(categoria)
+                : res.status(404).json({ mensagem: 'Categoria nao encontrada.' });
+        } catch (error) {
+            console.error(error);
+            return res.status(400).json({
+                mensagem: error instanceof Error ? error.message : 'Nao foi possivel atualizar a categoria.'
+            });
+        }
+    }
+
+    static async remover(req: Request, res: Response) {
+        try {
+            const id = Number(req.params.id);
+            if (!Number.isInteger(id) || id <= 0) {
+                return res.status(400).json({ mensagem: 'Identificador da categoria invalido.' });
+            }
+
+            const removida = await Categoria.remover(id);
+            return removida
+                ? res.status(200).json({ mensagem: 'Categoria removida com sucesso.' })
+                : res.status(404).json({ mensagem: 'Categoria nao encontrada.' });
+        } catch (error) {
+            console.error(error);
+            return res.status(400).json({
+                mensagem: error instanceof Error
+                    ? error.message
+                    : 'Nao foi possivel remover a categoria.'
+            });
+        }
+    }
 }
 
 export default CategoriaController;

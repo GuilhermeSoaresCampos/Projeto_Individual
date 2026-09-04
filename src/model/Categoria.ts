@@ -16,6 +16,25 @@ class Categoria {
         );
         return result.rows[0] as CategoriaDTO;
     }
+
+    static async atualizar(id: number, categoria: CategoriaDTO): Promise<CategoriaDTO | null> {
+        const result = await database.query(
+            `UPDATE categoria
+             SET nome = $1
+             WHERE id_categoria = $2
+             RETURNING id_categoria, nome`,
+            [categoria.nome, id]
+        );
+        return (result.rows[0] as CategoriaDTO | undefined) ?? null;
+    }
+
+    static async remover(id: number): Promise<boolean> {
+        const result = await database.query(
+            'DELETE FROM categoria WHERE id_categoria = $1',
+            [id]
+        );
+        return (result.rowCount ?? 0) > 0;
+    }
 }
 
 export default Categoria;

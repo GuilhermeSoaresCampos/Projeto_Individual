@@ -10,3 +10,5 @@ export interface MovimentacaoDTO {
     observacao: string;
     data_movimentacao?: string;
 }
+
+export type CorrecaoMovimentacaoDTO = Pick<MovimentacaoDTO, 'tipo' | 'quantidade' | 'observacao'>;

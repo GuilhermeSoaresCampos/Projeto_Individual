@@ -1,7 +1,11 @@
 import pg from 'pg';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-dotenv.config();
+dotenv.config({
+    path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../src/.env')
+});
 
 /**
  * Classe que representa o modelo de banco de dados.
@@ -33,9 +37,9 @@ export class DatabaseModel {
             host: process.env.DB_HOST,
             database: process.env.DB_NAME,
             password: process.env.DB_PASSWORD,
-            port: process.env.DB_PORT,
+            port: Number(process.env.DB_PORT),
             max: 10,
-            idleTimoutMillis: 10000
+            idleTimeoutMillis: 10000
         }
 
         // Inicialização do pool de conexões

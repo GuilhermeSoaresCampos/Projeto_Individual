@@ -18,6 +18,7 @@ O estoque e alterado automaticamente pelo trigger `fn_atualizar_estoque`. Movime
 - `GET /api/produtos/valor-estoque`
 - `GET /api/produtos/valor-total-estoque`
 - `GET/POST /api/movimentacoes`
+- `POST /api/movimentacoes/:id/correcao` para corrigir uma movimentacao confirmada sem alterar seu historico.
 
 Os exemplos para uso no REST Client do VS Code ficam em `infra/requests`.
 
