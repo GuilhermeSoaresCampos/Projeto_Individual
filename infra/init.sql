@@ -466,3 +466,22 @@ FROM movimentacao AS m
 INNER JOIN produto AS p
     ON p.id_produto = m.id_produto
 ORDER BY m.data_movimentacao DESC;
+
+
+CREATE TABLE usuario (
+    id_usuario INTEGER GENERATED ALWAYS AS IDENTITY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+
+    CONSTRAINT pk_usuario
+        PRIMARY KEY (id_usuario),
+
+    CONSTRAINT uq_usuario_email
+        UNIQUE (email)
+);
+
+SELECT * FROM usuario;
+
+INSERT INTO usuario (nome, email, senha)
+VALUES ('Administrador', 'admin@teste.com', '123456');

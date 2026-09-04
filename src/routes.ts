@@ -7,6 +7,7 @@ import { Auth } from './middlewares/Auth.js';
 const router = Router();
 
 router.post('/api/login', Auth.validacaoUsuario);
+router.post('/login', Auth.validacaoUsuario);
 router.get('/', (req: Request, res: Response) => {
     return res.status(200).json(`Aplicacao online. Timestamp: ${new Date()}`);
 });
