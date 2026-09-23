@@ -5,10 +5,11 @@ import path from 'node:path';
 import { type Request, type Response, type NextFunction } from 'express';
 import { DatabaseModel } from '../model/DatabaseModel.js';
 
+// Carrega o arquivo .env que está na raiz do projeto
 dotenv.config({
     path: path.resolve(
         path.dirname(fileURLToPath(import.meta.url)),
-        '../.env'
+        '../../.env'
     )
 });
 
@@ -34,6 +35,7 @@ export class Auth {
 
         try {
 
+            // Verifica se e-mail e senha foram enviados
             if (typeof email !== 'string' || typeof senha !== 'string') {
                 return res.status(400).json({
                     auth: false,
@@ -42,6 +44,7 @@ export class Auth {
                 });
             }
 
+            // Verifica se o JWT_SECRET está configurado
             if (!SECRET) {
                 return res.status(500).json({
                     auth: false,
@@ -91,13 +94,14 @@ export class Auth {
                 email: usuarioBanco.email
             };
 
-            // Gera o token
+            // Gera o token JWT
             const tokenUsuario = Auth.generateToken(
                 usuario.id_usuario,
                 usuario.nome,
                 usuario.email
             );
 
+            // Retorna os dados para o frontend
             return res.status(200).json({
                 auth: true,
                 token: tokenUsuario,
@@ -147,6 +151,7 @@ export class Auth {
         next: NextFunction
     ) {
 
+        // Verifica se o JWT_SECRET está configurado
         if (!SECRET) {
             return res.status(500).json({
                 mensagem: 'JWT_SECRET não configurado no ambiente.',
@@ -156,6 +161,8 @@ export class Auth {
 
         const authorization = req.headers.authorization;
 
+        // Aceita o token pelo x-access-token
+        // ou pelo Authorization: Bearer TOKEN
         const token =
             (req.headers['x-access-token'] as string | undefined)
             ??
@@ -165,6 +172,7 @@ export class Auth {
                     : undefined
             );
 
+        // Token não enviado
         if (!token) {
             return res.status(401).json({
                 mensagem: 'Token não informado.',
@@ -172,6 +180,7 @@ export class Auth {
             });
         }
 
+        // Valida o token
         jwt.verify(token, SECRET, (err, decoded) => {
 
             if (err) {
@@ -198,6 +207,7 @@ export class Auth {
 
             const { exp, id } = decoded as JwtPayload;
 
+            // Verifica se existe o ID do usuário
             if (!id) {
                 return res.status(401).json({
                     mensagem: 'ID não encontrado no token.',
@@ -205,6 +215,7 @@ export class Auth {
                 });
             }
 
+            // Verifica manualmente a expiração
             const currentTime = Math.floor(Date.now() / 1000);
 
             if (exp && currentTime > exp) {
@@ -214,10 +225,10 @@ export class Auth {
                 });
             }
 
+            // Disponibiliza o ID do usuário para as próximas rotas
             req.headers['userId'] = String(id);
 
             next();
         });
     }
 }
-

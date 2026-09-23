@@ -3,15 +3,19 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
+// Carrega o .env que está na raiz do projeto
 dotenv.config({
-    path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../src/.env')
+    path: path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../../.env'
+    )
 });
 
 /**
  * Classe que representa o modelo de banco de dados.
  */
 export class DatabaseModel {
-    
+
     /**
      * Configuração para conexão com o banco de dados
      */
@@ -31,7 +35,7 @@ export class DatabaseModel {
      * Construtor da classe DatabaseModel.
      */
     constructor() {
-        // Configuração padrão para conexão com o banco de dados
+
         this._config = {
             user: process.env.DB_USER,
             host: process.env.DB_HOST,
@@ -40,7 +44,7 @@ export class DatabaseModel {
             port: Number(process.env.DB_PORT),
             max: 10,
             idleTimeoutMillis: 10000
-        }
+        };
 
         // Inicialização do pool de conexões
         this._pool = new pg.Pool(this._config);
@@ -51,23 +55,26 @@ export class DatabaseModel {
 
     /**
      * Método para testar a conexão com o banco de dados.
-     *
-     * @returns **true** caso a conexão tenha sido feita, **false** caso negativo
      */
     public async testeConexao() {
+
         try {
-            // Tenta conectar ao banco de dados
+
             await this._client.connect();
+
             console.log('Database connected!');
-            // Encerra a conexão
-            this._client.end();
+
+            await this._client.end();
+
             return true;
+
         } catch (error) {
-            // Em caso de erro, exibe uma mensagem de erro
-            console.log('Error to connect database X( ');
+
+            console.log('Error to connect database X(');
             console.log(error);
-            // Encerra a conexão
-            this._client.end();
+
+            await this._client.end();
+
             return false;
         }
     }
